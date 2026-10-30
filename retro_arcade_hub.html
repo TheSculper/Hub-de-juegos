@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Arcade Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .font-arcade {
+            font-family: 'Press Start 2P', cursive;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Arcade Glow Effects */
+        .arcade-glow {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+        .arcade-glow-green {
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+        }
+        /* Smooth Canvas Render */
+        canvas {
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-30 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-500/30">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <span class="font-arcade text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 tracking-wider">RETRO_HUB</span>
+                </div>
+
+                <!-- Right Controls -->
+                <div class="flex items-center gap-4">
+                    <button id="themeToggleBtn" class="p-2.5 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none" title="Cambiar tema">
+                        <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Hero Banner -->
+        <section class="mb-10 text-center sm:text-left bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden shadow-2xl">
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-block px-3 py-1 bg-indigo-500/30 border border-indigo-400/30 rounded-full text-xs font-semibold text-indigo-300 uppercase tracking-widest mb-4">
+                    Prototipo v1.0
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
+                    Mi Colección Personal de Juegos
+                </h1>
+                <p class="text-indigo-200 text-sm sm:text-base leading-relaxed">
+                    Un espacio experimental desarrollado con HTML5 Canvas y Tailwind CSS. Elige un juego de la lista para empezar a jugar directamente en tu navegador.
+                </p>
+            </div>
+            <!-- Decorative background elements -->
+            <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-9xl">
+                <i class="fa-solid fa-ghost"></i>
+            </div>
+        </section>
+
+        <!-- Games Section Header -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-play text-indigo-500 text-sm"></i> Catálogo de Juegos
+            </h2>
+            <span class="text-xs text-gray-500 dark:text-gray-400">3 Títulos Disponibles</span>
+        </div>
+
+        <!-- Games Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Card 1: Snake (Playable) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                <div class="relative h-48 bg-slate-900 flex items-center justify-center overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-500" style="background-image: url('https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?auto=format&fit=crop&w=600&q=80');"></div>
+                    <i class="fa-solid fa-staff-snake text-6xl text-emerald-400 z-10 group-hover:scale-110 transition-transform duration-300"></i>
+                    <span class="absolute top-3 right-3 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                        Disponible
+                    </span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Classic Snake</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
+                            Guía a la serpiente para comer manzanas, acumula puntos y evita chocar contra las paredes o contigo mismo.
+                        </p>
+                    </div>
+                    <button onclick="openGameModal('snake')" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
+                        <i class="fa-solid fa-gamepad"></i> Jugar Ahora
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 2: Memory Game (Coming Soon) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm opacity-90 hover:opacity-100 transition-all duration-300 flex flex-col group">
+                <div class="relative h-48 bg-slate-900 flex items-center justify-center overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center opacity-30 group-hover:scale-105 transition-transform duration-500" style="background-image: url('https://images.unsplash.com/photo-1606168094336-48f205276929?auto=format&fit=crop&w=600&q=80');"></div>
+                    <i class="fa-solid fa-brain text-6xl text-indigo-400 z-10 group-hover:scale-110 transition-transform duration-300"></i>
+                    <span class="absolute top-3 right-3 bg-amber-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                        En Desarrollo
+                    </span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Memory Card Match</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
+                            Encuentra las parejas de cartas en el menor número de turnos posible y pon a prueba tu memoria.
+                        </p>
+                    </div>
+                    <button disabled class="w-full py-3 px-4 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 font-semibold text-sm cursor-not-allowed flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 3: Tetris (Coming Soon) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm opacity-90 hover:opacity-100 transition-all duration-300 flex flex-col group">
+                <div class="relative h-48 bg-slate-900 flex items-center justify-center overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center opacity-30 group-hover:scale-105 transition-transform duration-500" style="background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80');"></div>
+                    <i class="fa-solid fa-cubes text-6xl text-purple-400 z-10 group-hover:scale-110 transition-transform duration-300"></i>
+                    <span class="absolute top-3 right-3 bg-amber-500/90 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                        En Desarrollo
+                    </span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Tetris Arcade</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
+                            Acomoda las piezas flotantes para completar líneas horizontales antes de que la pantalla se llene.
+                        </p>
+                    </div>
+                    <button disabled class="w-full py-3 px-4 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 font-semibold text-sm cursor-not-allowed flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 mt-12 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 dark:text-gray-400">
+            <p>© 2026 Retro Arcade Hub - Proyecto de Juegos Personal</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Game Modal -->
+    <div id="gameModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 overflow-y-auto">
+        <div class="bg-gray-900 border border-gray-700 rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl flex flex-col my-auto">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h3 id="modalGameTitle" class="font-arcade text-xs text-emerald-400 tracking-wider">SNAKE GAME</h3>
+                </div>
+                <button onclick="closeGameModal()" class="text-gray-400 hover:text-white text-xl p-1 rounded-lg hover:bg-gray-800 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Game Body -->
+            <div class="p-4 sm:p-6 flex flex-col items-center justify-center bg-slate-950">
+                
+                <!-- Score & Stats Bar -->
+                <div class="w-full flex justify-between items-center mb-4 px-2 font-arcade text-xs">
+                    <div class="text-gray-400">PUNTAJE: <span id="snakeScore" class="text-white font-bold">0</span></div>
+                    <div class="text-gray-400">RÉCORD: <span id="snakeHighScore" class="text-amber-400 font-bold">0</span></div>
+                </div>
+
+                <!-- Canvas Container -->
+                <div class="relative w-full aspect-square max-w-[360px] bg-black rounded-xl overflow-hidden border-2 border-gray-800 flex items-center justify-center">
+                    <canvas id="snakeCanvas" width="360" height="360" class="w-full h-full"></canvas>
+                    
+                    <!-- Overlay Start / Game Over -->
+                    <div id="snakeOverlay" class="absolute inset-0 bg-black/85 flex flex-col items-center justify-center p-6 text-center z-10">
+                        <h4 id="overlayTitle" class="font-arcade text-lg text-emerald-400 mb-3">SNAKE</h4>
+                        <p id="overlayMessage" class="text-gray-300 text-xs mb-6 max-w-xs">Usa las flechas del teclado o los controles integrados para mover la serpiente.</p>
+                        <button id="startSnakeBtn" onclick="startSnakeGame()" class="py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm tracking-wider uppercase transition-colors shadow-lg shadow-emerald-600/30 font-arcade text-xs">
+                            INICIAR JUEGO
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Touch / Mobile On-Screen Controls -->
+                <div class="mt-6 w-full max-w-[240px] grid grid-cols-3 gap-2 sm:hidden">
+                    <div></div>
+                    <button onclick="setSnakeDirection('UP')" class="bg-gray-800 active:bg-gray-700 text-white p-4 rounded-xl flex items-center justify-center text-xl shadow-md">
+                        <i class="fa-solid fa-chevron-up"></i>
+                    </button>
+                    <div></div>
+                    <button onclick="setSnakeDirection('LEFT')" class="bg-gray-800 active:bg-gray-700 text-white p-4 rounded-xl flex items-center justify-center text-xl shadow-md">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button onclick="setSnakeDirection('DOWN')" class="bg-gray-800 active:bg-gray-700 text-white p-4 rounded-xl flex items-center justify-center text-xl shadow-md">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <button onclick="setSnakeDirection('RIGHT')" class="bg-gray-800 active:bg-gray-700 text-white p-4 rounded-xl flex items-center justify-center text-xl shadow-md">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Footer Controls -->
+            <div class="px-6 py-4 bg-gray-900 border-t border-gray-800 flex justify-between items-center text-xs text-gray-400">
+                <span><i class="fa-solid fa-keyboard"></i> Teclas de Dirección</span>
+                <button onclick="closeGameModal()" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 transition-colors">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // ----------------------------------------------------
+        // 1. Theme Management (Dark Mode)
+        // ----------------------------------------------------
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                themeIcon.className = 'fa-solid fa-sun text-amber-500';
+            } else {
+                document.documentElement.classList.add('dark');
+                themeIcon.className = 'fa-solid fa-moon text-gray-300';
+            }
+        });
+
+        // ----------------------------------------------------
+        // 2. Game Modal Controls
+        // ----------------------------------------------------
+        const gameModal = document.getElementById('gameModal');
+
+        function openGameModal(gameId) {
+            if (gameId === 'snake') {
+                gameModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent page scroll
+                resetSnakeCanvasUI();
+            }
+        }
+
+        function closeGameModal() {
+            gameModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            stopSnakeGame();
+        }
+
+        // Close modal on Escape key press
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !gameModal.classList.contains('hidden')) {
+                closeGameModal();
+            }
+        });
+
+        // ----------------------------------------------------
+        // 3. Snake Game Engine (HTML5 Canvas)
+        // ----------------------------------------------------
+        const canvas = document.getElementById('snakeCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElem = document.getElementById('snakeScore');
+        const highScoreElem = document.getElementById('snakeHighScore');
+        const overlay = document.getElementById('snakeOverlay');
+        const overlayTitle = document.getElementById('overlayTitle');
+        const overlayMessage = document.getElementById('overlayMessage');
+        const startBtn = document.getElementById('startSnakeBtn');
+
+        const gridSize = 18; // 18x18 grid
+        const tileSize = canvas.width / gridSize;
+        
+        let snake = [];
+        let food = { x: 0, y: 0 };
+        let dx = 1;
+        let dy = 0;
+        let score = 0;
+        let highScore = localStorage.getItem('snake_highscore') || 0;
+        let gameLoop = null;
+        let isGameRunning = false;
+        let nextDirection = { dx: 1, dy: 0 };
+
+        highScoreElem.textContent = highScore;
+
+        function resetSnakeCanvasUI() {
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            overlayTitle.textContent = "SNAKE";
+            overlayTitle.className = "font-arcade text-lg text-emerald-400 mb-3";
+            overlayMessage.textContent = "Usa las flechas del teclado o los controles integrados para mover la serpiente.";
+            startBtn.textContent = "INICIAR JUEGO";
+            overlay.classList.remove('hidden');
+        }
+
+        function startSnakeGame() {
+            overlay.classList.add('hidden');
+            snake = [
+                { x: 5, y: 9 },
+                { x: 4, y: 9 },
+                { x: 3, y: 9 }
+            ];
+            dx = 1;
+            dy = 0;
+            nextDirection = { dx: 1, dy: 0 };
+            score = 0;
+            scoreElem.textContent = score;
+            spawnFood();
+            
+            isGameRunning = true;
+            if (gameLoop) clearInterval(gameLoop);
+            gameLoop = setInterval(updateSnake, 110);
+        }
+
+        function stopSnakeGame() {
+            isGameRunning = false;
+            if (gameLoop) clearInterval(gameLoop);
+        }
+
+        function spawnFood() {
+            food = {
+                x: Math.floor(Math.random() * gridSize),
+                y: Math.floor(Math.random() * gridSize)
+            };
+            // Ensure food does not spawn inside the snake body
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    spawnFood();
+                    break;
+                }
+            }
+        }
+
+        function setSnakeDirection(dir) {
+            if (!isGameRunning) return;
+            if (dir === 'UP' && dy === 0) nextDirection = { dx: 0, dy: -1 };
+            if (dir === 'DOWN' && dy === 0) nextDirection = { dx: 0, dy: 1 };
+            if (dir === 'LEFT' && dx === 0) nextDirection = { dx: -1, dy: 0 };
+            if (dir === 'RIGHT' && dx === 0) nextDirection = { dx: 1, dy: 0 };
+        }
+
+        // Keyboard Controls Listener
+        window.addEventListener('keydown', (e) => {
+            if (!isGameRunning) return;
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'w':
+                case 'W':
+                    setSnakeDirection('UP');
+                    e.preventDefault();
+                    break;
+                case 'ArrowDown':
+                case 's':
+                case 'S':
+                    setSnakeDirection('DOWN');
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    setSnakeDirection('LEFT');
+                    e.preventDefault();
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    setSnakeDirection('RIGHT');
+                    e.preventDefault();
+                    break;
+            }
+        });
+
+        function updateSnake() {
+            // Apply registered direction change
+            dx = nextDirection.dx;
+            dy = nextDirection.dy;
+
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+            // Wall Collision Check
+            if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
+                gameOver();
+                return;
+            }
+
+            // Self Collision Check
+            for (let segment of snake) {
+                if (segment.x === head.x && segment.y === head.y) {
+                    gameOver();
+                    return;
+                }
+            }
+
+            snake.unshift(head);
+
+            // Food Eating Check
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                scoreElem.textContent = score;
+                if (score > highScore) {
+                    highScore = score;
+                    highScoreElem.textContent = highScore;
+                    localStorage.setItem('snake_highscore', highScore);
+                }
+                spawnFood();
+            } else {
+                snake.pop();
+            }
+
+            drawSnakeGame();
+        }
+
+        function drawSnakeGame() {
+            // Clear Background
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Subtle Grid
+            ctx.strokeStyle = '#111827';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < gridSize; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * tileSize, 0);
+                ctx.lineTo(i * tileSize, canvas.height);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, i * tileSize);
+                ctx.lineTo(canvas.width, i * tileSize);
+                ctx.stroke();
+            }
+
+            // Draw Food (Apple)
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(
+                food.x * tileSize + tileSize / 2,
+                food.y * tileSize + tileSize / 2,
+                tileSize / 2 - 2,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+
+            // Draw Snake
+            snake.forEach((segment, index) => {
+                // Head is brighter emerald, body is gradient green
+                ctx.fillStyle = index === 0 ? '#10b981' : '#059669';
+                ctx.fillRect(
+                    segment.x * tileSize + 1,
+                    segment.y * tileSize + 1,
+                    tileSize - 2,
+                    tileSize - 2
+                );
+            });
+        }
+
+        function gameOver() {
+            stopSnakeGame();
+            overlayTitle.textContent = "GAME OVER";
+            overlayTitle.className = "font-arcade text-lg text-rose-500 mb-3";
+            overlayMessage.textContent = `Puntaje obtenido: ${score} puntos.`;
+            startBtn.textContent = "REINTENTAR";
+            overlay.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
